@@ -9,17 +9,19 @@ import { dashboardStats } from "@/lib/mockData";
 
 export default function Dashboard() {
   return (
-    <div className="min-h-screen p-6 lg:p-8">
+    <div className="min-h-screen p-6 lg:p-8 gradient-subtle">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-display font-bold text-foreground tracking-tight">
+          Dashboard
+        </h1>
+        <p className="text-muted-foreground mt-1">
           AI-powered vehicle compliance overview
         </p>
       </div>
 
       {/* Metrics Grid */}
-      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mb-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
         <MetricCard
           title="Total Cars"
           value={dashboardStats.totalCars}

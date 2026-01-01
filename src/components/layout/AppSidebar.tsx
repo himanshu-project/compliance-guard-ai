@@ -7,6 +7,7 @@ import {
   Settings,
   Brain,
   ChevronLeft,
+  Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -34,18 +35,24 @@ export function AppSidebar() {
         {/* Logo Section */}
         <div className="flex h-16 items-center justify-between px-4 border-b border-sidebar-border">
           {!collapsed && (
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-ai">
-                <Brain className="h-5 w-5 text-ai-foreground" />
+            <div className="flex items-center gap-2.5">
+              <div className="relative flex h-9 w-9 items-center justify-center rounded-xl gradient-ai shadow-lg shadow-ai/25">
+                <Brain className="h-5 w-5 text-white" strokeWidth={1.75} />
+                <Sparkles className="absolute -top-1 -right-1 h-3 w-3 text-warning animate-pulse-subtle" />
               </div>
-              <span className="font-semibold text-sidebar-primary">
-                CarComply AI
-              </span>
+              <div>
+                <span className="font-display font-semibold text-sidebar-primary text-sm">
+                  CarComply
+                </span>
+                <span className="block text-[10px] text-sidebar-muted font-medium tracking-wider">
+                  AI POWERED
+                </span>
+              </div>
             </div>
           )}
           {collapsed && (
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg gradient-ai mx-auto">
-              <Brain className="h-5 w-5 text-ai-foreground" />
+            <div className="relative flex h-9 w-9 items-center justify-center rounded-xl gradient-ai mx-auto shadow-lg shadow-ai/25">
+              <Brain className="h-5 w-5 text-white" strokeWidth={1.75} />
             </div>
           )}
           <Button
@@ -53,18 +60,18 @@ export function AppSidebar() {
             size="icon"
             onClick={() => setCollapsed(!collapsed)}
             className={cn(
-              "h-8 w-8 text-sidebar-muted hover:text-sidebar-primary hover:bg-sidebar-accent",
-              collapsed && "absolute -right-3 top-4 bg-sidebar border border-sidebar-border rounded-full"
+              "h-7 w-7 text-sidebar-muted hover:text-sidebar-primary hover:bg-sidebar-accent transition-all",
+              collapsed && "absolute -right-3.5 top-4 bg-sidebar border border-sidebar-border rounded-full shadow-md"
             )}
           >
             <ChevronLeft
-              className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")}
+              className={cn("h-4 w-4 transition-transform duration-200", collapsed && "rotate-180")}
             />
           </Button>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-1 p-3">
+        <nav className="flex-1 space-y-1.5 p-3 mt-2">
           {navigationItems.map((item) => {
             const isActive = location.pathname === item.href;
             return (
@@ -72,13 +79,13 @@ export function AppSidebar() {
                 key={item.name}
                 to={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                    ? "bg-gradient-to-r from-sidebar-accent to-sidebar-accent/80 text-sidebar-accent-foreground shadow-sm"
                     : "text-sidebar-muted hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                 )}
               >
-                <item.icon className="h-5 w-5 flex-shrink-0" />
+                <item.icon className={cn("h-5 w-5 flex-shrink-0", isActive && "text-primary")} strokeWidth={1.75} />
                 {!collapsed && <span>{item.name}</span>}
               </NavLink>
             );
@@ -90,12 +97,12 @@ export function AppSidebar() {
           <NavLink
             to="/settings"
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-muted hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all",
+              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-muted hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all duration-200",
               location.pathname === "/settings" &&
                 "bg-sidebar-accent text-sidebar-accent-foreground"
             )}
           >
-            <Settings className="h-5 w-5 flex-shrink-0" />
+            <Settings className="h-5 w-5 flex-shrink-0" strokeWidth={1.75} />
             {!collapsed && <span>Settings</span>}
           </NavLink>
         </div>
