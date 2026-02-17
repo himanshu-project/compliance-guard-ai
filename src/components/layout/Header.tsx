@@ -1,4 +1,6 @@
-import { Bell, Search, ChevronDown, Sparkles } from "lucide-react";
+import { Bell, Search, ChevronDown, Sparkles, LogOut } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,7 +14,22 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Header() {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const unreadNotifications = 3;
+
+  const initials = user?.user_metadata?.first_name && user?.user_metadata?.last_name
+    ? `${user.user_metadata.first_name[0]}${user.user_metadata.last_name[0]}`.toUpperCase()
+    : user?.email?.substring(0, 2).toUpperCase() ?? "U";
+
+  const displayName = user?.user_metadata?.first_name
+    ? `${user.user_metadata.first_name} ${user.user_metadata.last_name ?? ""}`
+    : user?.email ?? "User";
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <header className="h-16 border-b border-border bg-card/80 backdrop-blur-md sticky top-0 z-40">
@@ -93,12 +110,12 @@ export function Header() {
                 <Avatar className="h-8 w-8 ring-2 ring-primary/10">
                   <AvatarImage src="" />
                   <AvatarFallback className="bg-gradient-to-br from-primary to-ai text-white text-sm font-semibold">
-                    JD
+                    {initials}
                   </AvatarFallback>
                 </Avatar>
                 <div className="hidden md:flex flex-col items-start">
-                  <span className="text-sm font-medium">John Doe</span>
-                  <span className="text-[11px] text-muted-foreground">Administrator</span>
+                  <span className="text-sm font-medium">{displayName}</span>
+                  <span className="text-[11px] text-muted-foreground">{user?.email}</span>
                 </div>
                 <ChevronDown className="h-4 w-4 text-muted-foreground hidden md:block" />
               </Button>
@@ -110,8 +127,11 @@ export function Header() {
               <DropdownMenuItem className="cursor-pointer">Preferences</DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer">Help & Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-destructive cursor-pointer focus:text-destructive">
-                Log out
+              <DropdownMenuItem 
+                className="text-destructive cursor-pointer focus:text-destructive gap-2"
+                onClick={handleSignOut}
+              >
+                <LogOut className="h-4 w-4" /> Log out
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
