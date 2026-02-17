@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -76,35 +78,60 @@ export default function LandingPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { session, loading } = useAuth();
+
+  // Redirect authenticated users to dashboard
+  useEffect(() => {
+    if (!loading && session) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [session, loading, navigate]);
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate sign in
-    setTimeout(() => {
-      setIsLoading(false);
-      toast({
-        title: "Welcome back!",
-        description: "You have successfully signed in.",
-      });
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email-signin") as string;
+    const password = formData.get("password-signin") as string;
+
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setIsLoading(false);
+
+    if (error) {
+      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Welcome back!", description: "You have successfully signed in." });
       navigate("/dashboard");
-    }, 1000);
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate sign up
-    setTimeout(() => {
-      setIsLoading(false);
+    const formData = new FormData(e.currentTarget);
+    const email = formData.get("email-signup") as string;
+    const password = formData.get("password-signup") as string;
+    const firstName = formData.get("firstname") as string;
+    const lastName = formData.get("lastname") as string;
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: { first_name: firstName, last_name: lastName },
+      },
+    });
+    setIsLoading(false);
+
+    if (error) {
+      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+    } else {
       toast({
-        title: "Account created!",
-        description: "Welcome to AutoComply AI. Let's get started.",
+        title: "Check your email!",
+        description: "We sent you a confirmation link to verify your account.",
       });
-      navigate("/dashboard");
-    }, 1000);
+    }
   };
 
   return (
@@ -193,6 +220,7 @@ export default function LandingPage() {
                           <Label htmlFor="email-signin">Email</Label>
                           <Input 
                             id="email-signin" 
+                            name="email-signin"
                             type="email" 
                             placeholder="name@company.com" 
                             required 
@@ -205,6 +233,7 @@ export default function LandingPage() {
                           </div>
                           <Input 
                             id="password-signin" 
+                            name="password-signin"
                             type="password" 
                             placeholder="••••••••" 
                             required 
@@ -221,21 +250,22 @@ export default function LandingPage() {
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <Label htmlFor="firstname">First Name</Label>
-                            <Input id="firstname" placeholder="John" required />
+                            <Input id="firstname" name="firstname" placeholder="John" required />
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="lastname">Last Name</Label>
-                            <Input id="lastname" placeholder="Doe" required />
+                            <Input id="lastname" name="lastname" placeholder="Doe" required />
                           </div>
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="company">Company Name</Label>
-                          <Input id="company" placeholder="Acme Fleet Services" required />
+                          <Input id="company" name="company" placeholder="Acme Fleet Services" />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="email-signup">Email</Label>
                           <Input 
                             id="email-signup" 
+                            name="email-signup"
                             type="email" 
                             placeholder="name@company.com" 
                             required 
@@ -245,6 +275,7 @@ export default function LandingPage() {
                           <Label htmlFor="password-signup">Password</Label>
                           <Input 
                             id="password-signup" 
+                            name="password-signup"
                             type="password" 
                             placeholder="••••••••" 
                             required 
