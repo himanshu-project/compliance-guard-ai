@@ -61,7 +61,7 @@ export function ActivityFeed() {
               {!isLast && (
                 <div
                   className={cn(
-                    "absolute left-[15px] top-6 h-[calc(100%-20px)] w-0.5 rounded-full",
+                    "absolute left-4 top-6 bottom-5 w-0.5 rounded-full -translate-x-1/2",
                     config.line,
                   )}
                 />
@@ -70,7 +70,7 @@ export function ActivityFeed() {
               {/* Icon */}
               <div
                 className={cn(
-                  "relative z-10 rounded-lg p-2 ring-2 ring-background",
+                  "relative z-10 shrink-0 rounded-lg p-2 ring-2 ring-background",
                   config.bg,
                 )}
               >
