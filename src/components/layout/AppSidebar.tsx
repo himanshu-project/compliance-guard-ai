@@ -20,14 +20,19 @@ const navigationItems = [
   { name: "Notifications", href: "/notifications", icon: Bell },
 ];
 
-export function AppSidebar() {
-  const [collapsed, setCollapsed] = useState(false);
+export function AppSidebar({
+  collapsed,
+  setCollapsed,
+}: {
+  collapsed: boolean;
+  setCollapsed: (val: boolean) => void;
+}) {
   const location = useLocation();
 
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300",
+        "h-screen overflow-visible bg-sidebar border-r border-sidebar-border transition-all duration-300 z-50 relative",
         collapsed ? "w-16" : "w-64",
       )}
     >
@@ -55,23 +60,25 @@ export function AppSidebar() {
               <Brain className="h-5 w-5 text-white" strokeWidth={1.75} />
             </div>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setCollapsed(!collapsed)}
-            className={cn(
-              "h-7 w-7 text-sidebar-muted hover:text-sidebar-primary hover:bg-sidebar-accent transition-all",
-              collapsed &&
-                "absolute -right-3.5 top-4 bg-sidebar border border-sidebar-border rounded-full shadow-md",
-            )}
-          >
-            <ChevronLeft
+          <div className="relative flex h-16 items-center justify-between px-4 border-b border-sidebar-border">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setCollapsed(!collapsed)}
               className={cn(
-                "h-4 w-4 transition-transform duration-200",
-                collapsed && "rotate-180",
+                "h-7 w-7 text-sidebar-muted hover:text-sidebar-primary hover:bg-sidebar-accent transition-all",
+                collapsed &&
+                  "absolute -right-2 top-4 bg-sidebar border border-sidebar-border rounded-full shadow-md",
               )}
-            />
-          </Button>
+            >
+              <ChevronLeft
+                className={cn(
+                  "h-4 w-4 transition-transform duration-200",
+                  collapsed && "rotate-180",
+                )}
+              />
+            </Button>
+          </div>
         </div>
 
         {/* Navigation */}

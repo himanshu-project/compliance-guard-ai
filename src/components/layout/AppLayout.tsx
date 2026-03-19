@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { AppSidebar } from "./AppSidebar";
 import { Header } from "./Header";
 
@@ -7,14 +7,14 @@ interface AppLayoutProps {
 }
 
 export function AppLayout({ children }: AppLayoutProps) {
+  const [collapsed, setCollapsed] = useState(false);
   return (
-    <div className="min-h-screen bg-background">
-      <AppSidebar />
-      <div className="ml-64 min-h-screen transition-all duration-300 flex flex-col">
+    <div className="flex">
+      <AppSidebar collapsed={collapsed} setCollapsed={setCollapsed} />
+
+      <div className="flex-1 flex flex-col transition-all duration-300">
         <Header />
-        <main className="flex-1">
-          {children}
-        </main>
+        <main>{children}</main>
       </div>
     </div>
   );
