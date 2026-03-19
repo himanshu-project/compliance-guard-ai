@@ -28,7 +28,7 @@ export function AppSidebar() {
     <aside
       className={cn(
         "fixed left-0 top-0 z-40 h-screen bg-sidebar border-r border-sidebar-border transition-all duration-300",
-        collapsed ? "w-16" : "w-64"
+        collapsed ? "w-16" : "w-64",
       )}
     >
       <div className="flex h-full flex-col">
@@ -61,11 +61,15 @@ export function AppSidebar() {
             onClick={() => setCollapsed(!collapsed)}
             className={cn(
               "h-7 w-7 text-sidebar-muted hover:text-sidebar-primary hover:bg-sidebar-accent transition-all",
-              collapsed && "absolute -right-3.5 top-4 bg-sidebar border border-sidebar-border rounded-full shadow-md"
+              collapsed &&
+                "absolute -right-3.5 top-4 bg-sidebar border border-sidebar-border rounded-full shadow-md",
             )}
           >
             <ChevronLeft
-              className={cn("h-4 w-4 transition-transform duration-200", collapsed && "rotate-180")}
+              className={cn(
+                "h-4 w-4 transition-transform duration-200",
+                collapsed && "rotate-180",
+              )}
             />
           </Button>
         </div>
@@ -82,10 +86,16 @@ export function AppSidebar() {
                   "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200",
                   isActive
                     ? "bg-gradient-to-r from-sidebar-accent to-sidebar-accent/80 text-sidebar-accent-foreground shadow-sm"
-                    : "text-sidebar-muted hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
+                    : "text-sidebar-muted hover:bg-sidebar-accent/50 hover:text-sidebar-foreground",
                 )}
               >
-                <item.icon className={cn("h-5 w-5 flex-shrink-0", isActive && "text-primary")} strokeWidth={1.75} />
+                <item.icon
+                  className={cn(
+                    "h-5 w-5 flex-shrink-0",
+                    isActive && "text-primary",
+                  )}
+                  strokeWidth={1.75}
+                />
                 {!collapsed && <span>{item.name}</span>}
               </NavLink>
             );
@@ -95,11 +105,11 @@ export function AppSidebar() {
         {/* Bottom Section */}
         <div className="border-t border-sidebar-border p-3">
           <NavLink
-            to="/settings"
+            to="/"
             className={cn(
               "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-muted hover:bg-sidebar-accent/50 hover:text-sidebar-foreground transition-all duration-200",
-              location.pathname === "/settings" &&
-                "bg-sidebar-accent text-sidebar-accent-foreground"
+              location.pathname === "/" &&
+                "bg-sidebar-accent text-sidebar-accent-foreground",
             )}
           >
             <Settings className="h-5 w-5 flex-shrink-0" strokeWidth={1.75} />

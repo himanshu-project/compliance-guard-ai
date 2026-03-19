@@ -1,25 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Car, 
-  Shield, 
-  Brain, 
-  Bell, 
-  CheckCircle2, 
-  TrendingUp, 
-  Users, 
+import {
+  Car,
+  Shield,
+  Brain,
+  Bell,
+  CheckCircle2,
+  TrendingUp,
+  Users,
   FileCheck,
   Sparkles,
   ArrowRight,
   BarChart3,
-  AlertTriangle
+  AlertTriangle,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,51 +33,58 @@ const features = [
   {
     icon: Brain,
     title: "AI-Powered Predictions",
-    description: "Predict vehicle inspection outcomes before they happen with 94% accuracy"
+    description:
+      "Predict vehicle inspection outcomes before they happen with 94% accuracy",
   },
   {
     icon: Shield,
     title: "Compliance Monitoring",
-    description: "Real-time tracking of registration, insurance, and fitness certificates"
+    description:
+      "Real-time tracking of registration, insurance, and fitness certificates",
   },
   {
     icon: Bell,
     title: "Smart Alerts",
-    description: "Automated notifications for expiring documents and predicted failures"
+    description:
+      "Automated notifications for expiring documents and predicted failures",
   },
   {
     icon: BarChart3,
     title: "Fleet Analytics",
-    description: "Comprehensive dashboards with actionable insights for fleet managers"
-  }
+    description:
+      "Comprehensive dashboards with actionable insights for fleet managers",
+  },
 ];
 
 const stats = [
   { value: "50K+", label: "Vehicles Managed" },
   { value: "94%", label: "Prediction Accuracy" },
   { value: "30%", label: "Cost Reduction" },
-  { value: "99.9%", label: "Uptime" }
+  { value: "99.9%", label: "Uptime" },
 ];
 
 const aiInsights = [
   {
     icon: AlertTriangle,
     title: "Predictive Failure Detection",
-    description: "Our AI analyzes historical data, maintenance patterns, and vehicle age to predict which cars are likely to fail their next inspection.",
-    color: "text-warning"
+    description:
+      "Our AI analyzes historical data, maintenance patterns, and vehicle age to predict which cars are likely to fail their next inspection.",
+    color: "text-warning",
   },
   {
     icon: TrendingUp,
     title: "Risk Scoring",
-    description: "Each vehicle receives a dynamic risk score based on compliance history, document status, and AI analysis.",
-    color: "text-ai-prediction"
+    description:
+      "Each vehicle receives a dynamic risk score based on compliance history, document status, and AI analysis.",
+    color: "text-ai-prediction",
   },
   {
     icon: Sparkles,
     title: "Smart Recommendations",
-    description: "Get actionable recommendations to improve fleet compliance and reduce operational costs.",
-    color: "text-success"
-  }
+    description:
+      "Get actionable recommendations to improve fleet compliance and reduce operational costs.",
+    color: "text-success",
+  },
 ];
 
 export default function LandingPage() {
@@ -79,6 +92,7 @@ export default function LandingPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { session, loading } = useAuth();
+  const authRef = useRef<HTMLDivElement | null>(null);
 
   // Redirect authenticated users to dashboard
   useEffect(() => {
@@ -94,13 +108,23 @@ export default function LandingPage() {
     const email = formData.get("email-signin") as string;
     const password = formData.get("password-signin") as string;
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
     setIsLoading(false);
 
     if (error) {
-      toast({ title: "Sign in failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Sign in failed",
+        description: error.message,
+        variant: "destructive",
+      });
     } else {
-      toast({ title: "Welcome back!", description: "You have successfully signed in." });
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
       navigate("/dashboard");
     }
   };
@@ -125,7 +149,11 @@ export default function LandingPage() {
     setIsLoading(false);
 
     if (error) {
-      toast({ title: "Sign up failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Sign up failed",
+        description: error.message,
+        variant: "destructive",
+      });
     } else {
       toast({
         title: "Check your email!",
@@ -134,15 +162,20 @@ export default function LandingPage() {
     }
   };
 
+  const handleScrollToAuth = () => {
+    authRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="relative overflow-hidden">
+      <div className="relative ">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-ai-prediction/5 to-success/5" />
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-ai-prediction/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-        
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-ai-prediction/5 to-success/5" />
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-ai-prediction/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+        </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Navigation */}
           <nav className="flex items-center justify-between py-6">
@@ -150,12 +183,29 @@ export default function LandingPage() {
               <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
                 <Car className="h-6 w-6 text-primary-foreground" />
               </div>
-              <span className="text-xl font-bold text-foreground">AutoComply AI</span>
+              <span className="text-xl font-bold text-foreground">
+                AutoComply AI
+              </span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
-              <a href="#ai-insights" className="text-muted-foreground hover:text-foreground transition-colors">AI Insights</a>
-              <a href="#auth" className="text-muted-foreground hover:text-foreground transition-colors">Get Started</a>
+              <a
+                href="#features"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Features
+              </a>
+              <a
+                href="#ai-insights"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                AI Insights
+              </a>
+              <a
+                href="#auth"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Get Started
+              </a>
             </div>
           </nav>
 
@@ -165,23 +215,26 @@ export default function LandingPage() {
             <div className="space-y-8">
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ai-prediction/10 border border-ai-prediction/20">
                 <Sparkles className="h-4 w-4 text-ai-prediction" />
-                <span className="text-sm font-medium text-ai-prediction">AI-Powered Compliance Management</span>
+                <span className="text-sm font-medium text-ai-prediction">
+                  AI-Powered Compliance Management
+                </span>
               </div>
-              
+
               <h1 className="text-4xl lg:text-6xl font-bold text-foreground leading-tight">
                 Smart Vehicle <br />
                 <span className="bg-gradient-to-r from-primary to-ai-prediction bg-clip-text text-transparent">
                   Compliance System
                 </span>
               </h1>
-              
+
               <p className="text-lg text-muted-foreground max-w-lg">
-                Harness the power of AI to predict inspection failures, automate compliance tracking, 
-                and keep your fleet roadworthy with intelligent alerts and analytics.
+                Harness the power of AI to predict inspection failures, automate
+                compliance tracking, and keep your fleet roadworthy with
+                intelligent alerts and analytics.
               </p>
 
               <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="gap-2" onClick={() => document.getElementById('auth')?.scrollIntoView({ behavior: 'smooth' })}>
+                <Button size="lg" className="gap-2">
                   Get Started Free <ArrowRight className="h-4 w-4" />
                 </Button>
                 <Button size="lg" variant="outline" className="gap-2">
@@ -193,19 +246,25 @@ export default function LandingPage() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-border">
                 {stats.map((stat) => (
                   <div key={stat.label}>
-                    <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-                    <div className="text-sm text-muted-foreground">{stat.label}</div>
+                    <div className="text-2xl font-bold text-foreground">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      {stat.label}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Right - Auth Card */}
-            <div id="auth" className="lg:pl-12">
+            <div id="auth" ref={authRef} className="lg:pl-12">
               <Card className="glass-card border-border/50 shadow-2xl">
                 <CardHeader className="text-center pb-2">
                   <CardTitle className="text-2xl">Welcome</CardTitle>
-                  <CardDescription>Sign in to your account or create a new one</CardDescription>
+                  <CardDescription>
+                    Sign in to your account or create a new one
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Tabs defaultValue="signin" className="w-full">
@@ -213,86 +272,125 @@ export default function LandingPage() {
                       <TabsTrigger value="signin">Sign In</TabsTrigger>
                       <TabsTrigger value="signup">Sign Up</TabsTrigger>
                     </TabsList>
-                    
+
                     <TabsContent value="signin">
                       <form onSubmit={handleSignIn} className="space-y-4">
                         <div className="space-y-2">
                           <Label htmlFor="email-signin">Email</Label>
-                          <Input 
-                            id="email-signin" 
+                          <Input
+                            id="email-signin"
                             name="email-signin"
-                            type="email" 
-                            placeholder="name@company.com" 
-                            required 
+                            type="email"
+                            placeholder="name@company.com"
+                            required
                           />
                         </div>
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <Label htmlFor="password-signin">Password</Label>
-                            <a href="#" className="text-sm text-primary hover:underline">Forgot password?</a>
+                            <a
+                              href="#"
+                              className="text-sm text-primary hover:underline"
+                            >
+                              Forgot password?
+                            </a>
                           </div>
-                          <Input 
-                            id="password-signin" 
+                          <Input
+                            id="password-signin"
                             name="password-signin"
-                            type="password" 
-                            placeholder="••••••••" 
-                            required 
+                            type="password"
+                            placeholder="••••••••"
+                            required
                           />
                         </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading}
+                        >
                           {isLoading ? "Signing in..." : "Sign In"}
                         </Button>
                       </form>
                     </TabsContent>
-                    
+
                     <TabsContent value="signup">
                       <form onSubmit={handleSignUp} className="space-y-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-2">
                             <Label htmlFor="firstname">First Name</Label>
-                            <Input id="firstname" name="firstname" placeholder="John" required />
+                            <Input
+                              id="firstname"
+                              name="firstname"
+                              placeholder="John"
+                              required
+                            />
                           </div>
                           <div className="space-y-2">
                             <Label htmlFor="lastname">Last Name</Label>
-                            <Input id="lastname" name="lastname" placeholder="Doe" required />
+                            <Input
+                              id="lastname"
+                              name="lastname"
+                              placeholder="Doe"
+                              required
+                            />
                           </div>
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="company">Company Name</Label>
-                          <Input id="company" name="company" placeholder="Acme Fleet Services" />
+                          <Input
+                            id="company"
+                            name="company"
+                            placeholder="Acme Fleet Services"
+                          />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="email-signup">Email</Label>
-                          <Input 
-                            id="email-signup" 
+                          <Input
+                            id="email-signup"
                             name="email-signup"
-                            type="email" 
-                            placeholder="name@company.com" 
-                            required 
+                            type="email"
+                            placeholder="name@company.com"
+                            required
                           />
                         </div>
                         <div className="space-y-2">
                           <Label htmlFor="password-signup">Password</Label>
-                          <Input 
-                            id="password-signup" 
+                          <Input
+                            id="password-signup"
                             name="password-signup"
-                            type="password" 
-                            placeholder="••••••••" 
-                            required 
+                            type="password"
+                            placeholder="••••••••"
+                            required
                           />
                         </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading}
+                        >
                           {isLoading ? "Creating account..." : "Create Account"}
                         </Button>
                         <p className="text-xs text-center text-muted-foreground">
                           By signing up, you agree to our{" "}
-                          <a href="#" className="text-primary hover:underline">Terms of Service</a>
-                          {" "}and{" "}
-                          <a href="#" className="text-primary hover:underline">Privacy Policy</a>
+                          <a href="#" className="text-primary hover:underline">
+                            Terms of Service
+                          </a>{" "}
+                          and{" "}
+                          <a href="#" className="text-primary hover:underline">
+                            Privacy Policy
+                          </a>
                         </p>
                       </form>
                     </TabsContent>
                   </Tabs>
+                  <div className="bg-primary-light/60 rounded-xl p-4 text-sm space-y-1">
+                    <p className="font-medium text-accent-foreground">
+                      🚀 Demo credentials
+                    </p>
+                    <p className="text-muted-foreground">
+                      Email: user@demo.com / 123456
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </div>
@@ -308,19 +406,27 @@ export default function LandingPage() {
               Everything You Need for Fleet Compliance
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive tools to manage vehicle compliance, powered by artificial intelligence
+              Comprehensive tools to manage vehicle compliance, powered by
+              artificial intelligence
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature) => (
-              <Card key={feature.title} className="glass-card border-border/50 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1">
+              <Card
+                key={feature.title}
+                className="glass-card border-border/50 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
+              >
                 <CardContent className="pt-6">
                   <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
                     <feature.icon className="h-6 w-6 text-primary" />
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
+                  <h3 className="font-semibold text-foreground mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {feature.description}
+                  </p>
                 </CardContent>
               </Card>
             ))}
@@ -335,26 +441,35 @@ export default function LandingPage() {
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-ai-prediction/10 border border-ai-prediction/20 mb-6">
                 <Brain className="h-4 w-4 text-ai-prediction" />
-                <span className="text-sm font-medium text-ai-prediction">AI-Powered Intelligence</span>
+                <span className="text-sm font-medium text-ai-prediction">
+                  AI-Powered Intelligence
+                </span>
               </div>
               <h2 className="text-3xl lg:text-4xl font-bold text-foreground mb-6">
                 Predictive Insights That <br />
                 <span className="text-ai-prediction">Save You Money</span>
               </h2>
               <p className="text-lg text-muted-foreground mb-8">
-                Our machine learning models analyze thousands of data points to predict compliance issues 
-                before they become costly problems. Stay ahead with intelligent recommendations.
+                Our machine learning models analyze thousands of data points to
+                predict compliance issues before they become costly problems.
+                Stay ahead with intelligent recommendations.
               </p>
 
               <div className="space-y-6">
                 {aiInsights.map((insight) => (
                   <div key={insight.title} className="flex gap-4">
-                    <div className={`h-10 w-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 ${insight.color}`}>
+                    <div
+                      className={`h-10 w-10 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 ${insight.color}`}
+                    >
                       <insight.icon className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-foreground mb-1">{insight.title}</h4>
-                      <p className="text-sm text-muted-foreground">{insight.description}</p>
+                      <h4 className="font-semibold text-foreground mb-1">
+                        {insight.title}
+                      </h4>
+                      <p className="text-sm text-muted-foreground">
+                        {insight.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -371,34 +486,52 @@ export default function LandingPage() {
                       <Brain className="h-5 w-5 text-ai-prediction" />
                     </div>
                     <div>
-                      <CardTitle className="text-lg">AI Risk Analysis</CardTitle>
-                      <CardDescription>Real-time vehicle assessment</CardDescription>
+                      <CardTitle className="text-lg">
+                        AI Risk Analysis
+                      </CardTitle>
+                      <CardDescription>
+                        Real-time vehicle assessment
+                      </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="p-6 space-y-4">
                   <div className="p-4 rounded-lg bg-warning/10 border border-warning/20">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">KA-05-MN-1234</span>
-                      <span className="text-xs px-2 py-1 rounded-full bg-warning/20 text-warning font-medium">High Risk</span>
+                      <span className="text-sm font-medium text-foreground">
+                        KA-05-MN-1234
+                      </span>
+                      <span className="text-xs px-2 py-1 rounded-full bg-warning/20 text-warning font-medium">
+                        High Risk
+                      </span>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Predicted to fail inspection in 15 days based on maintenance history and age
+                      Predicted to fail inspection in 15 days based on
+                      maintenance history and age
                     </p>
                   </div>
                   <div className="p-4 rounded-lg bg-success/10 border border-success/20">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">MH-12-AB-5678</span>
-                      <span className="text-xs px-2 py-1 rounded-full bg-success/20 text-success font-medium">Low Risk</span>
+                      <span className="text-sm font-medium text-foreground">
+                        MH-12-AB-5678
+                      </span>
+                      <span className="text-xs px-2 py-1 rounded-full bg-success/20 text-success font-medium">
+                        Low Risk
+                      </span>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Well maintained. 98% probability of passing next inspection
+                      Well maintained. 98% probability of passing next
+                      inspection
                     </p>
                   </div>
                   <div className="p-4 rounded-lg bg-ai-prediction/10 border border-ai-prediction/20">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-foreground">Fleet Summary</span>
-                      <span className="text-xs px-2 py-1 rounded-full bg-ai-prediction/20 text-ai-prediction font-medium">3 Insights</span>
+                      <span className="text-sm font-medium text-foreground">
+                        Fleet Summary
+                      </span>
+                      <span className="text-xs px-2 py-1 rounded-full bg-ai-prediction/20 text-ai-prediction font-medium">
+                        3 Insights
+                      </span>
                     </div>
                     <p className="text-sm text-muted-foreground">
                       3 vehicles require attention in the next 30 days
@@ -418,10 +551,11 @@ export default function LandingPage() {
             Ready to Transform Your Fleet Compliance?
           </h2>
           <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Join thousands of fleet managers who trust AutoComply AI to keep their vehicles roadworthy and compliant.
+            Join thousands of fleet managers who trust AutoComply AI to keep
+            their vehicles roadworthy and compliant.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" className="gap-2" onClick={() => document.getElementById('auth')?.scrollIntoView({ behavior: 'smooth' })}>
+            <Button size="lg" className="gap-2" onClick={handleScrollToAuth}>
               Start Free Trial <ArrowRight className="h-4 w-4" />
             </Button>
             <Button size="lg" variant="outline" className="gap-2">
@@ -439,7 +573,9 @@ export default function LandingPage() {
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center">
                 <Car className="h-4 w-4 text-primary-foreground" />
               </div>
-              <span className="font-semibold text-foreground">AutoComply AI</span>
+              <span className="font-semibold text-foreground">
+                AutoComply AI
+              </span>
             </div>
             <p className="text-sm text-muted-foreground">
               © 2024 AutoComply AI. All rights reserved.

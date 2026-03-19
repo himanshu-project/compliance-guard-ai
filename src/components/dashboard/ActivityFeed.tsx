@@ -1,4 +1,11 @@
-import { Activity, AlertTriangle, Bell, Brain, CheckCircle, Clock } from "lucide-react";
+import {
+  Activity,
+  AlertTriangle,
+  Bell,
+  Brain,
+  CheckCircle,
+  Clock,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { activityLogs } from "@/lib/mockData";
 import { formatDistanceToNow } from "date-fns";
@@ -37,7 +44,9 @@ export function ActivityFeed() {
         <div className="rounded-lg bg-muted p-2">
           <Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.75} />
         </div>
-        <h3 className="font-display font-semibold text-foreground">Recent Activity</h3>
+        <h3 className="font-display font-semibold text-foreground">
+          Recent Activity
+        </h3>
       </div>
 
       <div className="relative space-y-1">
@@ -52,15 +61,23 @@ export function ActivityFeed() {
               {!isLast && (
                 <div
                   className={cn(
-                    "absolute left-[17px] top-10 h-[calc(100%-8px)] w-0.5 rounded-full",
-                    config.line
+                    "absolute left-[15px] top-6 h-[calc(100%-20px)] w-0.5 rounded-full",
+                    config.line,
                   )}
                 />
               )}
 
               {/* Icon */}
-              <div className={cn("relative z-10 rounded-lg p-2 ring-2 ring-background", config.bg)}>
-                <Icon className={cn("h-4 w-4", config.text)} strokeWidth={1.75} />
+              <div
+                className={cn(
+                  "relative z-10 rounded-lg p-2 ring-2 ring-background",
+                  config.bg,
+                )}
+              >
+                <Icon
+                  className={cn("h-4 w-4", config.text)}
+                  strokeWidth={1.75}
+                />
               </div>
 
               {/* Content */}
