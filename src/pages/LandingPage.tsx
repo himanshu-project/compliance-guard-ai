@@ -383,12 +383,12 @@ export default function LandingPage() {
                       </form>
                     </TabsContent>
                   </Tabs>
-                  <div className="bg-primary-light/60 rounded-xl p-4 text-sm space-y-1">
+                  <div className="bg-primary-light/60 rounded-xl pt-4 text-sm space-y-1">
                     <p className="font-medium text-accent-foreground">
                       🚀 Demo credentials
                     </p>
                     <p className="text-muted-foreground">
-                      Email: user@demo.com / 123456
+                      Email: user@auto-compliance.com / Password: password123
                     </p>
                   </div>
                 </CardContent>
