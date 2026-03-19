@@ -32,7 +32,7 @@ export function AppSidebar({
   return (
     <aside
       className={cn(
-        "h-screen overflow-visible bg-sidebar border-r border-sidebar-border transition-all duration-300 z-50 relative",
+        "fixed left-0 top-0 z-50 h-screen overflow-visible bg-sidebar border-r border-sidebar-border transition-all duration-300",
         collapsed ? "w-16" : "w-64",
       )}
     >
