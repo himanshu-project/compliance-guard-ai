@@ -49,15 +49,15 @@ export function ActivityFeed() {
         </h3>
       </div>
 
-      <div className="relative space-y-1">
+      <div className="relative">
         {activityLogs.slice(0, 5).map((log, index) => {
           const config = activityConfig[log.type];
           const Icon = config.icon;
           const isLast = index === activityLogs.slice(0, 5).length - 1;
 
           return (
-            <div key={log.id} className="relative flex gap-3 group">
-              {/* Timeline line */}
+            <div key={log.id} className="relative flex gap-3 pb-5 last:pb-0">
+              {/* Timeline line - connects center of current icon to center of next icon */}
               {!isLast && (
                 <div
                   className={cn(
@@ -81,7 +81,7 @@ export function ActivityFeed() {
               </div>
 
               {/* Content */}
-              <div className="flex-1 min-w-0 pb-5">
+              <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground leading-snug">
                   {log.action}
                 </p>
